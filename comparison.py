@@ -18,8 +18,7 @@ trainoutput = []
 testinput = []
 testoutput = []
 
-columnToLearn = 15
-labelToLearn = columnToLearn - 1
+labelToLearn = config.targetColumn - 1
 
 trainTestSplit = 0.99
 trainSize = int(trainTestSplit * len(x))
@@ -36,15 +35,23 @@ for i, a in enumerate(x):
 	else:
 		test.append(list(int(float(b)) for b in a.split(',')))
 
-
 for i, a in enumerate(train):
-	trainoutput.append(a[labelToLearn])
-	traininput.append(a[2:13])
+	trainData = []
 
+	for idx in config.inputColumns:
+		trainData.append(a[idx])
+	
+	traininput.append(trainData)
+	trainoutput.append(a[labelToLearn])
 
 for i, a in enumerate(test):
+	testData = []
+
+	for idx in config.inputColumns:
+		testData.append(a[idx])
+
+	testinput.append(testData)
 	testoutput.append(a[labelToLearn])
-	testinput.append(a[2:13])
 
 
 X = np.array(traininput)
