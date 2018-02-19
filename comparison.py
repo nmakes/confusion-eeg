@@ -1,7 +1,6 @@
 # Programmed By Naveen Venkat
 # nav.naveenvenkat@gmail.com
 # Birla Institute of Technology and Science, Pilani
-# Copyright (c) 2018 Naveen Venkat. All Rights Reserved.
 
 import numpy as np
 import config
