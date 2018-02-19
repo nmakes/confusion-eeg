@@ -1,0 +1,812 @@
+test 1
+train [2, 3, 4, 5, 6, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0683259963989 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 2
+svm ... done in 0.0509669780731 sec
+gnb ... done in 0.000833034515381 sec
+ann ... done in 0.0567390918732 sec
+knn ... done 0.000871181488037 sec
+~ completed subject 2 in 0.110836982727 sec
+
+Training for subject 3
+svm ... done in 0.0980150699615 sec
+gnb ... done in 0.000710010528564 sec
+ann ... done in 0.0892879962921 sec
+knn ... done 0.00086784362793 sec
+~ completed subject 3 in 0.190659046173 sec
+
+Training for subject 4
+svm ... done in 0.0991690158844 sec
+gnb ... done in 0.000717878341675 sec
+ann ... done in 0.0353188514709 sec
+knn ... done 0.00106406211853 sec
+~ completed subject 4 in 0.138025045395 sec
+
+Training for subject 5
+svm ... done in 0.0932259559631 sec
+gnb ... done in 0.000696182250977 sec
+ann ... done in 0.0353798866272 sec
+knn ... done 0.000832080841064 sec
+~ completed subject 5 in 0.131862878799 sec
+
+Training for subject 6
+svm ... done in 0.0726799964905 sec
+gnb ... done in 0.000874042510986 sec
+ann ... done in 0.0548150539398 sec
+knn ... done 0.000841856002808 sec
+~ completed subject 6 in 0.131083011627 sec
+
+Training for subject 7
+svm ... done in 0.0944650173187 sec
+gnb ... done in 0.000777006149292 sec
+ann ... done in 0.0437541007996 sec
+knn ... done 0.00087308883667 sec
+~ completed subject 7 in 0.141612052917 sec
+
+Training for subject 8
+svm ... done in 0.0960228443146 sec
+gnb ... done in 0.000732183456421 sec
+ann ... done in 0.0203230381012 sec
+knn ... done 0.000840902328491 sec
+~ completed subject 8 in 0.119669914246 sec
+
+Training for subject 9
+svm ... done in 0.0826840400696 sec
+gnb ... done in 0.000869989395142 sec
+ann ... done in 0.077094078064 sec
+knn ... done 0.000792026519775 sec
+~ completed subject 9 in 0.163269996643 sec
+
+done fitting classifiers in 1.12771201134
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 1
+svm ... done in 0.736025094986 sec
+gnb ... done in 0.638581037521 sec
+ann ... done in 0.446460008621 sec
+knn ... done in 2.31819701195 sec
+~ completed subject 1 in 4.13933682442 sec
+
+done predicting classifiers in 4.13939404488
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000694036483765 sec
+writing results to analysis.txt
+done in  0.000303030014038 sec
+
+done operations in 5.3656411171
+test 2
+train [1, 3, 4, 5, 6, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0666418075562 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0595240592957 sec
+gnb ... done in 0.000703811645508 sec
+ann ... done in 0.020350933075 sec
+knn ... done 0.000834941864014 sec
+~ completed subject 1 in 0.0825879573822 sec
+
+Training for subject 3
+svm ... done in 0.0927360057831 sec
+gnb ... done in 0.000694036483765 sec
+ann ... done in 0.0862247943878 sec
+knn ... done 0.000858068466187 sec
+~ completed subject 3 in 0.182300806046 sec
+
+Training for subject 4
+svm ... done in 0.0991520881653 sec
+gnb ... done in 0.000700950622559 sec
+ann ... done in 0.0417289733887 sec
+knn ... done 0.000847816467285 sec
+~ completed subject 4 in 0.144186019897 sec
+
+Training for subject 5
+svm ... done in 0.0928549766541 sec
+gnb ... done in 0.000708818435669 sec
+ann ... done in 0.034126996994 sec
+knn ... done 0.000833034515381 sec
+~ completed subject 5 in 0.130234003067 sec
+
+Training for subject 6
+svm ... done in 0.0725741386414 sec
+gnb ... done in 0.000869035720825 sec
+ann ... done in 0.0777831077576 sec
+knn ... done 0.00084114074707 sec
+~ completed subject 6 in 0.153957843781 sec
+
+Training for subject 7
+svm ... done in 0.0950319766998 sec
+gnb ... done in 0.000708103179932 sec
+ann ... done in 0.050136089325 sec
+knn ... done 0.000823020935059 sec
+~ completed subject 7 in 0.14842915535 sec
+
+Training for subject 8
+svm ... done in 0.0965321063995 sec
+gnb ... done in 0.000705003738403 sec
+ann ... done in 0.0199511051178 sec
+knn ... done 0.000833034515381 sec
+~ completed subject 8 in 0.119742155075 sec
+
+Training for subject 9
+svm ... done in 0.082515001297 sec
+gnb ... done in 0.000869989395142 sec
+ann ... done in 0.0694718360901 sec
+knn ... done 0.000802993774414 sec
+~ completed subject 9 in 0.155611038208 sec
+
+done fitting classifiers in 1.11773681641
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 2
+svm ... done in 0.738754987717 sec
+gnb ... done in 0.606096982956 sec
+ann ... done in 0.44428396225 sec
+knn ... done in 2.27075791359 sec
+~ completed subject 2 in 4.0599770546 sec
+
+done predicting classifiers in 4.06003499031
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000528812408447 sec
+writing results to analysis.txt
+done in  0.000349044799805 sec
+
+done operations in 5.27624702454
+test 3
+train [1, 2, 4, 5, 6, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0664179325104 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0569229125977 sec
+gnb ... done in 0.000716924667358 sec
+ann ... done in 0.0259299278259 sec
+knn ... done 0.000826835632324 sec
+~ completed subject 1 in 0.0858960151672 sec
+
+Training for subject 2
+svm ... done in 0.0860450267792 sec
+gnb ... done in 0.000861883163452 sec
+ann ... done in 0.0587520599365 sec
+knn ... done 0.000798940658569 sec
+~ completed subject 2 in 0.14829993248 sec
+
+Training for subject 4
+svm ... done in 0.0978569984436 sec
+gnb ... done in 0.000706911087036 sec
+ann ... done in 0.0717008113861 sec
+knn ... done 0.000850915908813 sec
+~ completed subject 4 in 0.172879934311 sec
+
+Training for subject 5
+svm ... done in 0.0940539836884 sec
+gnb ... done in 0.00080680847168 sec
+ann ... done in 0.0654289722443 sec
+knn ... done 0.000822067260742 sec
+~ completed subject 5 in 0.162846088409 sec
+
+Training for subject 6
+svm ... done in 0.0737810134888 sec
+gnb ... done in 0.000908136367798 sec
+ann ... done in 0.0455820560455 sec
+knn ... done 0.000846147537231 sec
+~ completed subject 6 in 0.12295794487 sec
+
+Training for subject 7
+svm ... done in 0.0939590930939 sec
+gnb ... done in 0.000710010528564 sec
+ann ... done in 0.0485908985138 sec
+knn ... done 0.00082802772522 sec
+~ completed subject 7 in 0.145859003067 sec
+
+Training for subject 8
+svm ... done in 0.094831943512 sec
+gnb ... done in 0.000689029693604 sec
+ann ... done in 0.055557012558 sec
+knn ... done 0.000836849212646 sec
+~ completed subject 8 in 0.153669118881 sec
+
+Training for subject 9
+svm ... done in 0.0799491405487 sec
+gnb ... done in 0.000850200653076 sec
+ann ... done in 0.0683040618896 sec
+knn ... done 0.000800132751465 sec
+~ completed subject 9 in 0.154438972473 sec
+
+done fitting classifiers in 1.14752483368
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 3
+svm ... done in 0.745749950409 sec
+gnb ... done in 0.629201173782 sec
+ann ... done in 0.463385105133 sec
+knn ... done in 2.35587716103 sec
+~ completed subject 3 in 4.19428992271 sec
+
+done predicting classifiers in 4.19434595108
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.0143361091614 sec
+writing results to analysis.txt
+done in  0.000303983688354 sec
+
+done operations in 5.45262002945
+test 4
+train [1, 2, 3, 5, 6, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.06787109375 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0575687885284 sec
+gnb ... done in 0.000745058059692 sec
+ann ... done in 0.0416188240051 sec
+knn ... done 0.000847101211548 sec
+~ completed subject 1 in 0.102251052856 sec
+
+Training for subject 2
+svm ... done in 0.0876669883728 sec
+gnb ... done in 0.000887155532837 sec
+ann ... done in 0.105277061462 sec
+knn ... done 0.000813007354736 sec
+~ completed subject 2 in 0.196495056152 sec
+
+Training for subject 3
+svm ... done in 0.0939199924469 sec
+gnb ... done in 0.000700950622559 sec
+ann ... done in 0.0249168872833 sec
+knn ... done 0.000839948654175 sec
+~ completed subject 3 in 0.125113964081 sec
+
+Training for subject 5
+svm ... done in 0.0928399562836 sec
+gnb ... done in 0.000669956207275 sec
+ann ... done in 0.0884430408478 sec
+knn ... done 0.000829935073853 sec
+~ completed subject 5 in 0.185574054718 sec
+
+Training for subject 6
+svm ... done in 0.073940038681 sec
+gnb ... done in 0.000859975814819 sec
+ann ... done in 0.056519985199 sec
+knn ... done 0.000890016555786 sec
+~ completed subject 6 in 0.136915922165 sec
+
+Training for subject 7
+svm ... done in 0.0924179553986 sec
+gnb ... done in 0.000725030899048 sec
+ann ... done in 0.0416190624237 sec
+knn ... done 0.000833034515381 sec
+~ completed subject 7 in 0.138467073441 sec
+
+Training for subject 8
+svm ... done in 0.0952959060669 sec
+gnb ... done in 0.000702142715454 sec
+ann ... done in 0.0208530426025 sec
+knn ... done 0.00085186958313 sec
+~ completed subject 8 in 0.119457960129 sec
+
+Training for subject 9
+svm ... done in 0.084881067276 sec
+gnb ... done in 0.000868082046509 sec
+ann ... done in 0.0408630371094 sec
+knn ... done 0.000800848007202 sec
+~ completed subject 9 in 0.129253864288 sec
+
+done fitting classifiers in 1.13416695595
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 4
+svm ... done in 0.72366809845 sec
+gnb ... done in 0.627231121063 sec
+ann ... done in 0.452716112137 sec
+knn ... done in 2.31433010101 sec
+~ completed subject 4 in 4.11801886559 sec
+
+done predicting classifiers in 4.11807584763
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000216960906982 sec
+writing results to analysis.txt
+done in  0.000196933746338 sec
+
+done operations in 5.35161614418
+test 5
+train [1, 2, 3, 4, 6, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0678129196167 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.055083990097 sec
+gnb ... done in 0.000714063644409 sec
+ann ... done in 0.0434510707855 sec
+knn ... done 0.000852108001709 sec
+~ completed subject 1 in 0.101294994354 sec
+
+Training for subject 2
+svm ... done in 0.0893979072571 sec
+gnb ... done in 0.000866889953613 sec
+ann ... done in 0.089259147644 sec
+knn ... done 0.000815868377686 sec
+~ completed subject 2 in 0.18223285675 sec
+
+Training for subject 3
+svm ... done in 0.0921859741211 sec
+gnb ... done in 0.00074315071106 sec
+ann ... done in 0.095358133316 sec
+knn ... done 0.000859975814819 sec
+~ completed subject 3 in 0.190946817398 sec
+
+Training for subject 4
+svm ... done in 0.1010389328 sec
+gnb ... done in 0.000706911087036 sec
+ann ... done in 0.0387809276581 sec
+knn ... done 0.000869035720825 sec
+~ completed subject 4 in 0.143152952194 sec
+
+Training for subject 6
+svm ... done in 0.0758650302887 sec
+gnb ... done in 0.000876903533936 sec
+ann ... done in 0.0419371128082 sec
+knn ... done 0.000831127166748 sec
+~ completed subject 6 in 0.121358156204 sec
+
+Training for subject 7
+svm ... done in 0.0965139865875 sec
+gnb ... done in 0.000699043273926 sec
+ann ... done in 0.0419111251831 sec
+knn ... done 0.000845193862915 sec
+~ completed subject 7 in 0.141757011414 sec
+
+Training for subject 8
+svm ... done in 0.0963320732117 sec
+gnb ... done in 0.00075888633728 sec
+ann ... done in 0.0869340896606 sec
+knn ... done 0.000844955444336 sec
+~ completed subject 8 in 0.186616897583 sec
+
+Training for subject 9
+svm ... done in 0.0861370563507 sec
+gnb ... done in 0.000854015350342 sec
+ann ... done in 0.101022005081 sec
+knn ... done 0.000792026519775 sec
+~ completed subject 9 in 0.190644025803 sec
+
+done fitting classifiers in 1.25867795944
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 5
+svm ... done in 0.715296030045 sec
+gnb ... done in 0.602724075317 sec
+ann ... done in 0.447382926941 sec
+knn ... done in 2.25887608528 sec
+~ completed subject 5 in 4.02435398102 sec
+
+done predicting classifiers in 4.02441191673
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000217914581299 sec
+writing results to analysis.txt
+done in  0.000349044799805 sec
+
+done operations in 5.38512682915
+test 6
+train [1, 2, 3, 4, 5, 7, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0660948753357 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0585889816284 sec
+gnb ... done in 0.000691890716553 sec
+ann ... done in 0.106251955032 sec
+knn ... done 0.00084400177002 sec
+~ completed subject 1 in 0.168673038483 sec
+
+Training for subject 2
+svm ... done in 0.0874209403992 sec
+gnb ... done in 0.001051902771 sec
+ann ... done in 0.121606826782 sec
+knn ... done 0.000814914703369 sec
+~ completed subject 2 in 0.212774991989 sec
+
+Training for subject 3
+svm ... done in 0.0971541404724 sec
+gnb ... done in 0.000773906707764 sec
+ann ... done in 0.0203518867493 sec
+knn ... done 0.00086498260498 sec
+~ completed subject 3 in 0.120923995972 sec
+
+Training for subject 4
+svm ... done in 0.100229024887 sec
+gnb ... done in 0.000674962997437 sec
+ann ... done in 0.021194934845 sec
+knn ... done 0.000839948654175 sec
+~ completed subject 4 in 0.124704122543 sec
+
+Training for subject 5
+svm ... done in 0.0953438282013 sec
+gnb ... done in 0.000706195831299 sec
+ann ... done in 0.0195479393005 sec
+knn ... done 0.00082802772522 sec
+~ completed subject 5 in 0.118176937103 sec
+
+Training for subject 7
+svm ... done in 0.0952959060669 sec
+gnb ... done in 0.000705003738403 sec
+ann ... done in 0.0235381126404 sec
+knn ... done 0.000823020935059 sec
+~ completed subject 7 in 0.122094869614 sec
+
+Training for subject 8
+svm ... done in 0.090747833252 sec
+gnb ... done in 0.00067400932312 sec
+ann ... done in 0.0219819545746 sec
+knn ... done 0.000854969024658 sec
+~ completed subject 8 in 0.122200012207 sec
+
+Training for subject 9
+svm ... done in 0.0850229263306 sec
+gnb ... done in 0.000875949859619 sec
+ann ... done in 0.03568816185 sec
+knn ... done 0.000810861587524 sec
+~ completed subject 9 in 0.124232053757 sec
+
+done fitting classifiers in 1.11448502541
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 6
+svm ... done in 0.758676052094 sec
+gnb ... done in 0.62752699852 sec
+ann ... done in 0.443614959717 sec
+knn ... done in 2.32188105583 sec
+~ completed subject 6 in 4.15177798271 sec
+
+done predicting classifiers in 4.1518368721
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000617027282715 sec
+writing results to analysis.txt
+done in  0.000205993652344 sec
+
+done operations in 5.36409282684
+test 7
+train [1, 2, 3, 4, 5, 6, 8, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0678009986877 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.056135892868 sec
+gnb ... done in 0.000663042068481 sec
+ann ... done in 0.050087928772 sec
+knn ... done 0.000843048095703 sec
+~ completed subject 1 in 0.109750986099 sec
+
+Training for subject 2
+svm ... done in 0.0909640789032 sec
+gnb ... done in 0.000879049301147 sec
+ann ... done in 0.0493040084839 sec
+knn ... done 0.000801086425781 sec
+~ completed subject 2 in 0.143804073334 sec
+
+Training for subject 3
+svm ... done in 0.0940179824829 sec
+gnb ... done in 0.000713109970093 sec
+ann ... done in 0.0838520526886 sec
+knn ... done 0.000838041305542 sec
+~ completed subject 3 in 0.181240081787 sec
+
+Training for subject 4
+svm ... done in 0.100462913513 sec
+gnb ... done in 0.000724792480469 sec
+ann ... done in 0.0396628379822 sec
+knn ... done 0.000868082046509 sec
+~ completed subject 4 in 0.143505096436 sec
+
+Training for subject 5
+svm ... done in 0.0974259376526 sec
+gnb ... done in 0.000694990158081 sec
+ann ... done in 0.086354970932 sec
+knn ... done 0.000827074050903 sec
+~ completed subject 5 in 0.187031030655 sec
+
+Training for subject 6
+svm ... done in 0.0764248371124 sec
+gnb ... done in 0.000859975814819 sec
+ann ... done in 0.0472888946533 sec
+knn ... done 0.000848054885864 sec
+~ completed subject 6 in 0.127287149429 sec
+
+Training for subject 8
+svm ... done in 0.096223115921 sec
+gnb ... done in 0.000689029693604 sec
+ann ... done in 0.0626649856567 sec
+knn ... done 0.000833034515381 sec
+~ completed subject 8 in 0.16216301918 sec
+
+Training for subject 9
+svm ... done in 0.0862228870392 sec
+gnb ... done in 0.000849962234497 sec
+ann ... done in 0.0758020877838 sec
+knn ... done 0.000793218612671 sec
+~ completed subject 9 in 0.165513038635 sec
+
+done fitting classifiers in 1.22098588943
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 7
+svm ... done in 0.721661090851 sec
+gnb ... done in 0.609364032745 sec
+ann ... done in 0.441668987274 sec
+knn ... done in 2.30054521561 sec
+~ completed subject 7 in 4.07331299782 sec
+
+done predicting classifiers in 4.07336997986
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000715017318726 sec
+writing results to analysis.txt
+done in  0.00019097328186 sec
+
+done operations in 5.39520287514
+test 8
+train [1, 2, 3, 4, 5, 6, 7, 9]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0675730705261 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0576620101929 sec
+gnb ... done in 0.000705003738403 sec
+ann ... done in 0.0270850658417 sec
+knn ... done 0.000840902328491 sec
+~ completed subject 1 in 0.0876598358154 sec
+
+Training for subject 2
+svm ... done in 0.0889329910278 sec
+gnb ... done in 0.000877141952515 sec
+ann ... done in 0.0914478302002 sec
+knn ... done 0.000818014144897 sec
+~ completed subject 2 in 0.183960914612 sec
+
+Training for subject 3
+svm ... done in 0.0955228805542 sec
+gnb ... done in 0.000729084014893 sec
+ann ... done in 0.112373828888 sec
+knn ... done 0.000883817672729 sec
+~ completed subject 3 in 0.211344957352 sec
+
+Training for subject 4
+svm ... done in 0.101592063904 sec
+gnb ... done in 0.000797986984253 sec
+ann ... done in 0.053239107132 sec
+knn ... done 0.000855922698975 sec
+~ completed subject 4 in 0.158293962479 sec
+
+Training for subject 5
+svm ... done in 0.100930929184 sec
+gnb ... done in 0.000784873962402 sec
+ann ... done in 0.0382990837097 sec
+knn ... done 0.00082802772522 sec
+~ completed subject 5 in 0.14256811142 sec
+
+Training for subject 6
+svm ... done in 0.0761759281158 sec
+gnb ... done in 0.000856876373291 sec
+ann ... done in 0.0601599216461 sec
+knn ... done 0.000920057296753 sec
+~ completed subject 6 in 0.141469955444 sec
+
+Training for subject 7
+svm ... done in 0.0957608222961 sec
+gnb ... done in 0.00069522857666 sec
+ann ... done in 0.0253839492798 sec
+knn ... done 0.000838041305542 sec
+~ completed subject 7 in 0.128818035126 sec
+
+Training for subject 9
+svm ... done in 0.0857110023499 sec
+gnb ... done in 0.000870227813721 sec
+ann ... done in 0.0620949268341 sec
+knn ... done 0.000802040100098 sec
+~ completed subject 9 in 0.1514108181 sec
+
+done fitting classifiers in 1.2071518898
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 8
+svm ... done in 0.726366043091 sec
+gnb ... done in 0.619736909866 sec
+ann ... done in 0.451036930084 sec
+knn ... done in 2.32242703438 sec
+~ completed subject 8 in 4.11962985992 sec
+
+done predicting classifiers in 4.11970496178
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000322103500366 sec
+writing results to analysis.txt
+done in  0.000156879425049 sec
+
+done operations in 5.42537307739
+test 9
+train [1, 2, 3, 4, 5, 6, 7, 8]
+starting subject dependent operations
+
+getSubjectDependentRawTrainTest starting ...
+~ completed in 0.0665850639343 sec
+
+fitClassifiers starting ...
+number of train subjects = 8
+
+Training for subject 1
+svm ... done in 0.0563631057739 sec
+gnb ... done in 0.000702142715454 sec
+ann ... done in 0.0267279148102 sec
+knn ... done 0.00084400177002 sec
+~ completed subject 1 in 0.0861310958862 sec
+
+Training for subject 2
+svm ... done in 0.0892381668091 sec
+gnb ... done in 0.000874042510986 sec
+ann ... done in 0.0228970050812 sec
+knn ... done 0.000797033309937 sec
+~ completed subject 2 in 0.115663051605 sec
+
+Training for subject 3
+svm ... done in 0.0951540470123 sec
+gnb ... done in 0.000694990158081 sec
+ann ... done in 0.0716388225555 sec
+knn ... done 0.000854969024658 sec
+~ completed subject 3 in 0.170168876648 sec
+
+Training for subject 4
+svm ... done in 0.101516962051 sec
+gnb ... done in 0.000699996948242 sec
+ann ... done in 0.0230948925018 sec
+knn ... done 0.000863075256348 sec
+~ completed subject 4 in 0.12796998024 sec
+
+Training for subject 5
+svm ... done in 0.0893280506134 sec
+gnb ... done in 0.000698089599609 sec
+ann ... done in 0.0355129241943 sec
+knn ... done 0.000842094421387 sec
+~ completed subject 5 in 0.133769035339 sec
+
+Training for subject 6
+svm ... done in 0.0773310661316 sec
+gnb ... done in 0.000877857208252 sec
+ann ... done in 0.0771970748901 sec
+knn ... done 0.000843048095703 sec
+~ completed subject 6 in 0.158134222031 sec
+
+Training for subject 7
+svm ... done in 0.096184015274 sec
+gnb ... done in 0.000699996948242 sec
+ann ... done in 0.0540609359741 sec
+knn ... done 0.000854015350342 sec
+~ completed subject 7 in 0.153563022614 sec
+
+Training for subject 8
+svm ... done in 0.0970830917358 sec
+gnb ... done in 0.000755786895752 sec
+ann ... done in 0.0383260250092 sec
+knn ... done 0.000844955444336 sec
+~ completed subject 8 in 0.138800859451 sec
+
+done fitting classifiers in 1.08488297462
+
+----------------------------------
+
+predictClassifiers starting ...
+number of test subjects = 1
+
+Testing for subject 9
+svm ... done in 0.719523906708 sec
+gnb ... done in 0.603173971176 sec
+ann ... done in 0.441576957703 sec
+knn ... done in 2.27342104912 sec
+~ completed subject 9 in 4.03777098656 sec
+
+done predicting classifiers in 4.03782916069
+
+----------------------------------
+
+writing raw dictionary to analysis.dict
+done in 0.000565052032471 sec
+writing results to analysis.txt
+done in  0.000257968902588 sec
+
+done operations in 5.22214698792
+writing results to cumulative_analysis.txt
+done in  0.000561952590942 sec

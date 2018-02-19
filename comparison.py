@@ -7,11 +7,14 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
+# ==========================
+# SUBJECT DEPENDENT ANALYSIS
+# ==========================
 
 # GET RAW TRAIN AND TEST DATA
-def getRawTrainTest(datasetFile):
+def getSubjectDependentRawTrainTest(datasetFile, trainSubjects, testSubjects):
 	print
-	print "getRawTrainTest starting ..."
+	print "getSubjectDependentRawTrainTest starting ..."
 
 	t = time()
 	dataLines = []
@@ -29,14 +32,14 @@ def getRawTrainTest(datasetFile):
 		subject = content[0]
 		video = content[1]
 
-		if subject in config.trainSubjects:
+		if subject in trainSubjects:
 
 			if subject not in train:
 				train[subject] = []
 			else:
 				train[subject].append(content)
 
-		elif subject in config.testSubjects:
+		elif subject in testSubjects:
 
 			if subject not in test:
 				test[subject] = []
@@ -49,7 +52,7 @@ def getRawTrainTest(datasetFile):
 
 
 # SPLIT INTO INPUT AND OUTPUT FOR EACH SUBJECT
-def splitTrainTestIO(train, test):
+def splitSubjectDependentTrainTestIO(train, test, inputColumns, targetColumn):
 	
 	traininputs = {}
 	trainoutputs = {}
@@ -62,10 +65,10 @@ def splitTrainTestIO(train, test):
 			trainInputData = []
 			trainOutputData = []
 
-			for idx in config.inputColumns:
+			for idx in inputColumns:
 				trainInputData.append(line[idx-1])
 
-			for idx in config.targetColumn:
+			for idx in targetColumn:
 				trainOutputData.append(line[idx-1])
 			
 			if subject in traininputs:
@@ -87,10 +90,10 @@ def splitTrainTestIO(train, test):
 			testInputData = []
 			testOutputData = []
 
-			for idx in config.inputColumns:
+			for idx in inputColumns:
 				testInputData.append(line[idx-1])
 
-			for idx in config.targetColumn:
+			for idx in targetColumn:
 				testOutputData.append(line[idx-1])
 			
 			if subject in testinputs:
@@ -109,7 +112,7 @@ def splitTrainTestIO(train, test):
 
 
 # TRAIN EACH CLASSIFIER
-def fitClassifiers(traininputs, trainoutputs):
+def fitSubjectDependentClassifiers(traininputs, trainoutputs):
 	print
 	print "fitClassifiers starting ..."
 	print "number of train subjects =", len(traininputs.keys())
@@ -174,7 +177,7 @@ def fitClassifiers(traininputs, trainoutputs):
 
 
 # PREDICTION BY EACH CLASSIFIER
-def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
+def predictSubjectDependentClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
 	print
 	print "predictClassifiers starting ..."
 	print "number of test subjects =", len(testinputs.keys())
@@ -257,7 +260,7 @@ def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
 
 
 # PUBLISH RESULTS
-def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn):
+def publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn):
 	
 	print
 	print "writing raw dictionary to analysis.dict"
@@ -292,15 +295,81 @@ def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetCo
 	print "done in ", t2-t1, "sec"
 
 
-print "starting operations"
-startTime = time()
+# GET CUMULATIVE RESULTS
+def getSubjectDependentCumulativeScores(scores, analysis):
 
-(train, test) = getRawTrainTest(config.datasetFile)
-(traininputs, trainoutputs, testinputs, testoutputs) = splitTrainTestIO(train, test)
-(svm, gnb, ann, knn) = fitClassifiers(traininputs, trainoutputs)
-analysis = predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs)
-publishResults(analysis, config.trainSubjects, config.testSubjects, config.inputColumns, config.targetColumn)
+	for subject in analysis:
+		scores['svm'] += analysis[subject]['svm']['accuracy']
+		scores['gnb'] += analysis[subject]['gnb']['accuracy']
+		scores['ann'] += analysis[subject]['ann']['accuracy']
+		scores['knn'] += analysis[subject]['knn']['accuracy']
 
-endTime = time()
-print
-print "done operations in", endTime - startTime
+	return scores
+
+
+# PUBLISH CUMULATIVE RESULTS
+def publishSubjectDependentCumulativeResults(scores):
+
+	print "writing results to cumulative_analysis.txt"
+
+	t1 = time()
+	with open(config.analysisCumulativeFile, 'a') as f:
+		for cfier in scores:
+
+			f.write("inputColumns: " + str(inputColumns) + "\n")
+			f.write("targetColumn: " + str(targetColumn) + "\n")
+
+			
+			f.write(str(cfier) + " : " + str(scores[cfier]) + "\n")
+			f.write("-----------------------------------------\n")
+
+	t2 = time()
+	print "done in ", t2-t1, "sec"
+
+
+# RUN SUBJECT DEPENDENT OPERATIONS
+def runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn):
+	print "starting subject dependent operations"
+	startTime = time()
+
+	(train, test) = getSubjectDependentRawTrainTest(config.datasetFile, trainSubjects, testSubjects)
+	(traininputs, trainoutputs, testinputs, testoutputs) = splitSubjectDependentTrainTestIO(train, test, inputColumns, targetColumn)
+	(svm, gnb, ann, knn) = fitSubjectDependentClassifiers(traininputs, trainoutputs)
+	analysis = predictSubjectDependentClassifiers(svm, gnb, ann, knn, testinputs, testoutputs)
+	publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn)
+
+	endTime = time()
+	print
+	print "done operations in", endTime - startTime
+	return analysis
+
+
+# EXECUTION
+
+if __name__ == '__main__':
+
+	scores = {}
+	scores['svm'] = 0
+	scores['gnb'] = 0
+	scores['ann'] = 0
+	scores['knn'] = 0
+
+	for i in config.subjects:
+		testSubjects = [i]
+		trainSubjects = sorted(list(set(config.subjects) - set(testSubjects)))
+		print "test", i
+		print "train", trainSubjects
+		inputColumns = config.inputColumns
+		targetColumn = config.targetColumn
+
+		analysis = runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn)
+		scores = getSubjectDependentCumulativeScores(scores, analysis)
+	
+	scores['svm'] /= 9
+	scores['gnb'] /= 9
+	scores['ann'] /= 9
+	scores['knn'] /= 9
+	publishSubjectDependentCumulativeResults(scores)
+
+
+# ===========================================================================================================================
