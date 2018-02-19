@@ -8,143 +8,168 @@ from sklearn.neighbors import KNeighborsClassifier
 
 x = []
 file = 'EEG data.csv'
+
+
+# Read Contents of the dataset
 with open(file) as f:
 	x = f.readlines()
 
-train = []
-test = []
-traininput = []
-trainoutput = []
-testinput = []
-testoutput = []
 
-labelToLearn = config.targetColumn - 1
+# GET RAW TRAIN AND TEST DATA
 
-trainTestSplit = 0.99
-trainSize = int(trainTestSplit * len(x))
-
-print
-print "Data Size =", len(x)
-print "Train =", trainSize
-print "Test =", len(x) - trainSize
-print
+train = {}
+test = {}
 
 for i, a in enumerate(x):
-	if i < trainSize:
-		train.append(list(int(float(b)) for b in a.split(',')))
-	else:
-		test.append(list(int(float(b)) for b in a.split(',')))
 
-for i, a in enumerate(train):
-	trainData = []
+	content = list(int(float(b)) for b in a.split(','))
 
-	for idx in config.inputColumns:
-		trainData.append(a[idx])
+	subject = content[0]
+	video = content[1]
+
+	if subject in config.trainSubjects:
+
+		if subject not in train:
+			train[subject] = []
+		else:
+			train[subject].append(content)
+
+	elif subject in config.testSubjects:
+
+		if subject not in test:
+			test[subject] = []
+		else:
+			test[subject].append(content)
+
+
+# SPLIT INTO INPUT AND OUTPUT FOR EACH SUBJECT
+
+traininputs = {}
+trainoutputs = {}
+testinputs = {}
+testoutputs = {}
+
+for subject in train:
+	for line in train[subject]:
+		
+		trainData = []
+
+		for idx in config.inputColumns:
+			trainData.append(line[idx])
+		
+		if subject in traininputs:
+			traininputs[subject].append(trainData)
+		else:
+			traininputs[subject] = []
+			traininputs[subject].append(trainData)
+		
+		if subject in trainoutputs:
+			trainoutputs[subject].append(trainData)
+		else:
+			trainoutputs[subject] = []
+			trainoutputs[subject].append(trainData)
+
+		trainoutputs.append(line[labelToLearn])
+
+
+for subject in test:
+	for line in test[subject]:
+		
+		testData = []
+
+		for idx in config.inputColumns:
+			testData.append(line[idx])
+		
+		if subject in testinputs:
+			testinputs[subject].append(testData)
+		else:
+			testinputs[subject] = []
+			testinputs[subject].append(testData)
+		
+		if subject in testoutputs:
+			testoutputs[subject].append(testData)
+		else:
+			testoutputs[subject] = []
+			testoutputs[subject].append(testData)
+
+		testoutputs.append(line[labelToLearn])
+
+
+def fitClassifiers(svm, gnb, ann, knn, traininputs, trainoutputs):
+
+	for subject in traininputs:
+
+		X = np.array(traininputs[subject])
+		y = np.array(trainoutputs[subject])
+
+		svm = SVC()
+		svm[subject].fit(X,y)
+
+		gnb = GaussianNB()		
+		gnb[subject].fit(X,y)
+
+		ann = MLPClassifier(learning_rate = 'adaptive')
+		ann[subject].fit(X,y)
+
+		knn = KNeighborsClassifier()
+		knn[subject].fit(X,y)
+
+	return svm, gnb, ann, knn
+
+
+''' UNDER DEVELOPMENT 
+
+def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
 	
-	traininput.append(trainData)
-	trainoutput.append(a[labelToLearn])
+	for subject in testinputs:
 
-for i, a in enumerate(test):
-	testData = []
+		analysis = {}
 
-	for idx in config.inputColumns:
-		testData.append(a[idx])
+		correct = [0, 0, 0, 0]
+		incorrect = [0, 0, 0, 0]
 
-	testinput.append(testData)
-	testoutput.append(a[labelToLearn])
+		analysis['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
 
+		for i, a in enumerate(testinputs):
+			
+			if svm.predict([a])[0] == testoutputs[i]:
+				analysis['svm']['correct'] += 1
+			else:
+				analysis['svm']['incorrect'] += 1
+			
+			if gnb.predict([a])[0] == testoutputs[i]:
+				analysis['gnb']['correct'] += 1
+			else:
+				analysis['gnb']['incorrect'] += 1
+			
+			if ann.predict([a])[0] == testoutputs[i]:
+				analysis['ann']['correct'] += 1
+			else:
+				analysis['ann']['incorrect'] += 1
+			
+			if knn.predict([a])[0] == testoutputs[i]:
+				analysis['knn']['correct'] += 1
+			else:
+				analysis['knn']['incorrect'] += 1
 
-X = np.array(traininput)
-y = np.array(trainoutput)
+		for key in analysis:
+			analysis[key]['accuracy'] = float(analysis[key]['correct']) / float(analysis[key]['correct'] + analysis[key]['incorrect']) * 100
 
-
-#SVM Classification Training
-
-print "SVM running ...",
-
-svm = SVC()
-svm.fit(X, y)
-
-print "done"
-
-#Gaussian Naive Bayes
-
-print "GNB running ...",
-
-gnb = GaussianNB()
-gnb.fit(X, y)
-
-print "done"
-
-#Artificial Neural Network
-
-print "ANN running ...",
-
-ann = MLPClassifier(learning_rate = 'adaptive')
-ann.fit(X, y)
-
-print "done"
-
-#K-Nearest Neighbor Classifier
-
-print "KNN running ...",
-
-knn = KNeighborsClassifier()
-knn.fit(X, y)
-
-print "done"
-
-def analyze(svm, gnb, ann, knn, testinput, testoutput):
-	
-	analysis = {}
-
-	correct = [0, 0, 0, 0]
-	incorrect = [0, 0, 0, 0]
-
-	analysis['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-	analysis['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-	analysis['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-	analysis['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-
-	for i, a in enumerate(testinput):
-		
-		if svm.predict([a])[0] == testoutput[i]:
-			analysis['svm']['correct'] += 1
-		else:
-			analysis['svm']['incorrect'] += 1
-		
-		if gnb.predict([a])[0] == testoutput[i]:
-			analysis['gnb']['correct'] += 1
-		else:
-			analysis['gnb']['incorrect'] += 1
-		
-		if ann.predict([a])[0] == testoutput[i]:
-			analysis['ann']['correct'] += 1
-		else:
-			analysis['ann']['incorrect'] += 1
-		
-		if knn.predict([a])[0] == testoutput[i]:
-			analysis['knn']['correct'] += 1
-		else:
-			analysis['knn']['incorrect'] += 1
-
-	for key in analysis:
-		analysis[key]['accuracy'] = float(analysis[key]['correct']) / float(analysis[key]['correct'] + analysis[key]['incorrect']) * 100
-
-	return analysis
+		return analysis
 
 
 print "ANALYSIS running ...",
-analysis = analyze(svm, gnb, ann, knn, testinput, testoutput)
+analysis = analyze(svm, gnb, ann, knn, testinputs, testoutputs)
 print "done"
 print
-# print "SVM =", float(correct[0])/float(incorrect[0]+correct[0]) * 100
-# print "GNB =", float(correct[1])/float(incorrect[1]+correct[1]) * 100
-# print "ANN =", float(correct[2])/float(incorrect[2]+correct[2]) * 100
-# print "KNN =", float(correct[3])/float(incorrect[3]+correct[3]) * 100
 
 for key in analysis:
 	print key, ":"
 	for k2 in analysis[key]:
 		print k2, "=", analysis[key][k2]
 	print
+
+'''
