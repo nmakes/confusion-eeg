@@ -21,8 +21,19 @@ Column 15: user-defined label (whether the subject is actually confused) - confu
 
 '''
 
+datasetFile = 'EEG data.csv'
+analysisDictFile = 'analysis.dict'
+analysisRawFile = 'analysis.txt'
+
+#TestCases = []
+#subjects = [1,2,3,4,5,6,7,8,9]
+
+#for i in range(1,10):
+#	trainSubjects = [i in ]
+#	testSubjects = [i]
+
 trainSubjects = [1,2,3,4,5,6,7,8]
 testSubjects = [9]
 
-inputColumns = [14]
+inputColumns = [2,3,4,6,7,8,9,10,11,12,13,14]
 targetColumn = [15]

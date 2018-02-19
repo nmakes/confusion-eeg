@@ -7,101 +7,108 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
-x = []
-file = 'EEG data.csv'
-
-
-# Read Contents of the dataset
-with open(file) as f:
-	x = f.readlines()
-
 
 # GET RAW TRAIN AND TEST DATA
+def getRawTrainTest(datasetFile):
+	print
+	print "getRawTrainTest starting ..."
 
-train = {}
-test = {}
+	t = time()
+	dataLines = []
 
-for i, a in enumerate(x):
+	with open(config.datasetFile) as f:
+		dataLines = f.readlines()
 
-	content = list(int(float(b)) for b in a.split(','))
+	train = {}
+	test = {}
 
-	subject = content[0]
-	video = content[1]
+	for i, a in enumerate(dataLines):
 
-	if subject in config.trainSubjects:
+		content = list(int(float(b)) for b in a.split(','))
 
-		if subject not in train:
-			train[subject] = []
-		else:
-			train[subject].append(content)
+		subject = content[0]
+		video = content[1]
 
-	elif subject in config.testSubjects:
+		if subject in config.trainSubjects:
 
-		if subject not in test:
-			test[subject] = []
-		else:
-			test[subject].append(content)
+			if subject not in train:
+				train[subject] = []
+			else:
+				train[subject].append(content)
+
+		elif subject in config.testSubjects:
+
+			if subject not in test:
+				test[subject] = []
+			else:
+				test[subject].append(content)
+	t = time() - t
+	print "~ completed in", t, "sec"
+
+	return (train, test)
 
 
 # SPLIT INTO INPUT AND OUTPUT FOR EACH SUBJECT
+def splitTrainTestIO(train, test):
+	
+	traininputs = {}
+	trainoutputs = {}
+	testinputs = {}
+	testoutputs = {}
 
-traininputs = {}
-trainoutputs = {}
-testinputs = {}
-testoutputs = {}
+	for subject in train:
+		for line in train[subject]:
+			
+			trainInputData = []
+			trainOutputData = []
 
-for subject in train:
-	for line in train[subject]:
-		
-		trainInputData = []
-		trainOutputData = []
+			for idx in config.inputColumns:
+				trainInputData.append(line[idx-1])
 
-		for idx in config.inputColumns:
-			trainInputData.append(line[idx-1])
-
-		for idx in config.targetColumn:
-			trainOutputData.append(line[idx-1])
-		
-		if subject in traininputs:
-			traininputs[subject].append(trainInputData)
-		else:
-			traininputs[subject] = []
-			traininputs[subject].append(trainInputData)
-		
-		if subject in trainoutputs:
-			trainoutputs[subject].append(trainOutputData)
-		else:
-			trainoutputs[subject] = []
-			trainoutputs[subject].append(trainOutputData)
+			for idx in config.targetColumn:
+				trainOutputData.append(line[idx-1])
+			
+			if subject in traininputs:
+				traininputs[subject].append(trainInputData)
+			else:
+				traininputs[subject] = []
+				traininputs[subject].append(trainInputData)
+			
+			if subject in trainoutputs:
+				trainoutputs[subject].append(trainOutputData)
+			else:
+				trainoutputs[subject] = []
+				trainoutputs[subject].append(trainOutputData)
 
 
-for subject in test:
-	for line in test[subject]:
-		
-		testInputData = []
-		testOutputData = []
+	for subject in test:
+		for line in test[subject]:
+			
+			testInputData = []
+			testOutputData = []
 
-		for idx in config.inputColumns:
-			testInputData.append(line[idx-1])
+			for idx in config.inputColumns:
+				testInputData.append(line[idx-1])
 
-		for idx in config.targetColumn:
-			testOutputData.append(line[idx-1])
-		
-		if subject in testinputs:
-			testinputs[subject].append(testInputData)
-		else:
-			testinputs[subject] = []
-			testinputs[subject].append(testInputData)
-		
-		if subject in testoutputs:
-			testoutputs[subject].append(testOutputData)
-		else:
-			testoutputs[subject] = []
-			testoutputs[subject].append(testOutputData)
+			for idx in config.targetColumn:
+				testOutputData.append(line[idx-1])
+			
+			if subject in testinputs:
+				testinputs[subject].append(testInputData)
+			else:
+				testinputs[subject] = []
+				testinputs[subject].append(testInputData)
+			
+			if subject in testoutputs:
+				testoutputs[subject].append(testOutputData)
+			else:
+				testoutputs[subject] = []
+				testoutputs[subject].append(testOutputData)
+
+	return (traininputs, trainoutputs, testinputs, testoutputs)
 
 
 # TRAIN EACH CLASSIFIER
-
 def fitClassifiers(traininputs, trainoutputs):
 	print
 	print "fitClassifiers starting ..."
@@ -167,7 +174,6 @@ def fitClassifiers(traininputs, trainoutputs):
 
 
 # PREDICTION BY EACH CLASSIFIER
-
 def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
 	print
 	print "predictClassifiers starting ..."
@@ -251,14 +257,15 @@ def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
 
 
 # PUBLISH RESULTS
-
 def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn):
+	
 	print
 	print "writing raw dictionary to analysis.dict"
 
 	t1 = time()
 	
-	with open('analysis.dict', 'w+') as f:
+	with open(config.analysisDictFile, 'a') as f:
+		f.write("\n")
 		f.write(str(analysis))
 	
 	t2 = time()
@@ -267,7 +274,7 @@ def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetCo
 	print "writing results to analysis.txt"
 
 	t1 = time()
-	with open('analysis.txt', 'w+') as f:
+	with open(config.analysisRawFile, 'a') as f:
 		for testSubject in analysis:
 
 			f.write("\n")
@@ -280,6 +287,7 @@ def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetCo
 			for cfier in analysis[testSubject]:
 				f.write(str(cfier) + " : " + str(analysis[testSubject][cfier]['accuracy']) + "\n")
 			f.write("-----------------------------------------\n")
+
 	t2 = time()
 	print "done in ", t2-t1, "sec"
 
@@ -287,6 +295,8 @@ def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetCo
 print "starting operations"
 startTime = time()
 
+(train, test) = getRawTrainTest(config.datasetFile)
+(traininputs, trainoutputs, testinputs, testoutputs) = splitTrainTestIO(train, test)
 (svm, gnb, ann, knn) = fitClassifiers(traininputs, trainoutputs)
 analysis = predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs)
 publishResults(analysis, config.trainSubjects, config.testSubjects, config.inputColumns, config.targetColumn)
