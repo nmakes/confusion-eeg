@@ -1,3 +1,8 @@
+# Programmed By Naveen Venkat
+# nav.naveenvenkat@gmail.com
+# Birla Institute of Technology and Science, Pilani
+# Copyright (c) 2018 Naveen Venkat. All Rights Reserved.
+
 '''
 
 Column information
@@ -21,10 +26,10 @@ Column 15: user-defined label (whether the subject is actually confused) - confu
 
 '''
 
-datasetFile = 'EEG data.csv'
-analysisDictFile = 'analysis.dict'
-analysisRawFile = 'analysis.txt'
-analysisCumulativeFile = 'cumulative_analysis.txt'
+datasetFile = './dataset/EEG data.csv'
+analysisDictFile = './analysis/analysis.dict'
+analysisRawFile = './analysis/analysis.txt'
+analysisCumulativeFile = './analysis/cumulative_analysis.txt'
 
 subjects = [1,2,3,4,5,6,7,8,9]
 
