@@ -1,0 +1,1 @@
+{9: {'gnb': {'incorrect': 5044, 'correct': 5036, 'accuracy': 49.96031746031746}, 'knn': {'incorrect': 5143, 'correct': 4937, 'accuracy': 48.9781746031746}, 'ann': {'incorrect': 5044, 'correct': 5036, 'accuracy': 49.96031746031746}, 'svm': {'incorrect': 5044, 'correct': 5036, 'accuracy': 49.96031746031746}}}

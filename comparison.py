@@ -1,5 +1,6 @@
 import numpy as np
 import config
+from time import time
 
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
@@ -52,124 +53,244 @@ testoutputs = {}
 for subject in train:
 	for line in train[subject]:
 		
-		trainData = []
+		trainInputData = []
+		trainOutputData = []
 
 		for idx in config.inputColumns:
-			trainData.append(line[idx])
+			trainInputData.append(line[idx-1])
+
+		for idx in config.targetColumn:
+			trainOutputData.append(line[idx-1])
 		
 		if subject in traininputs:
-			traininputs[subject].append(trainData)
+			traininputs[subject].append(trainInputData)
 		else:
 			traininputs[subject] = []
-			traininputs[subject].append(trainData)
+			traininputs[subject].append(trainInputData)
 		
 		if subject in trainoutputs:
-			trainoutputs[subject].append(trainData)
+			trainoutputs[subject].append(trainOutputData)
 		else:
 			trainoutputs[subject] = []
-			trainoutputs[subject].append(trainData)
-
-		trainoutputs.append(line[labelToLearn])
+			trainoutputs[subject].append(trainOutputData)
 
 
 for subject in test:
 	for line in test[subject]:
 		
-		testData = []
+		testInputData = []
+		testOutputData = []
 
 		for idx in config.inputColumns:
-			testData.append(line[idx])
+			testInputData.append(line[idx-1])
+
+		for idx in config.targetColumn:
+			testOutputData.append(line[idx-1])
 		
 		if subject in testinputs:
-			testinputs[subject].append(testData)
+			testinputs[subject].append(testInputData)
 		else:
 			testinputs[subject] = []
-			testinputs[subject].append(testData)
+			testinputs[subject].append(testInputData)
 		
 		if subject in testoutputs:
-			testoutputs[subject].append(testData)
+			testoutputs[subject].append(testOutputData)
 		else:
 			testoutputs[subject] = []
-			testoutputs[subject].append(testData)
-
-		testoutputs.append(line[labelToLearn])
+			testoutputs[subject].append(testOutputData)
 
 
-def fitClassifiers(svm, gnb, ann, knn, traininputs, trainoutputs):
+# TRAIN EACH CLASSIFIER
+
+def fitClassifiers(traininputs, trainoutputs):
+	print
+	print "fitClassifiers starting ..."
+	print "number of train subjects =", len(traininputs.keys())
+
+	runningTime = time()
+
+	svm = {}
+	gnb = {}
+	ann = {}
+	knn = {}
 
 	for subject in traininputs:
 
+		print
+		print "Training for subject", subject
+
+		T = time()
+
 		X = np.array(traininputs[subject])
 		y = np.array(trainoutputs[subject])
+		l = len(y)
+		y = y.reshape(l,)
 
-		svm = SVC()
+		print "svm ...",
+		t = time()
+		svm[subject] = SVC()
 		svm[subject].fit(X,y)
+		t = time() - t
+		print "done in", t, "sec"
 
-		gnb = GaussianNB()		
+		print "gnb ...",
+		t = time()
+		gnb[subject] = GaussianNB()		
 		gnb[subject].fit(X,y)
+		t = time() - t
+		print "done in", t, "sec"
 
-		ann = MLPClassifier(learning_rate = 'adaptive')
+		print "ann ...",
+		t = time()
+		ann[subject] = MLPClassifier(learning_rate = 'adaptive')
 		ann[subject].fit(X,y)
+		t = time() - t
+		print "done in", t, "sec"
 
-		knn = KNeighborsClassifier()
+		print "knn ...",
+		t = time()
+		knn[subject] = KNeighborsClassifier()
 		knn[subject].fit(X,y)
+		t = time() - t
+		print "done", t, "sec"
 
-	return svm, gnb, ann, knn
+		T = time() - T
+		print "~ completed subject", subject, "in", T, "sec"
+
+	runningTime = time() - runningTime
+
+	print
+	print "done fitting classifiers in", runningTime
+	print
+	print "----------------------------------"
+	return (svm, gnb, ann, knn)
 
 
-''' UNDER DEVELOPMENT 
+# PREDICTION BY EACH CLASSIFIER
 
 def predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs):
-	
+	print
+	print "predictClassifiers starting ..."
+	print "number of test subjects =", len(testinputs.keys())
+
+	runningTime = time()
+
+	analysis = {}
+
 	for subject in testinputs:
 
-		analysis = {}
+		print
+		print "Testing for subject", subject
+		T = time()
 
-		correct = [0, 0, 0, 0]
-		incorrect = [0, 0, 0, 0]
+		analysis[subject] = {}
 
-		analysis['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis[subject]['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis[subject]['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis[subject]['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis[subject]['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
 
-		for i, a in enumerate(testinputs):
-			
-			if svm.predict([a])[0] == testoutputs[i]:
-				analysis['svm']['correct'] += 1
-			else:
-				analysis['svm']['incorrect'] += 1
-			
-			if gnb.predict([a])[0] == testoutputs[i]:
-				analysis['gnb']['correct'] += 1
-			else:
-				analysis['gnb']['incorrect'] += 1
-			
-			if ann.predict([a])[0] == testoutputs[i]:
-				analysis['ann']['correct'] += 1
-			else:
-				analysis['ann']['incorrect'] += 1
-			
-			if knn.predict([a])[0] == testoutputs[i]:
-				analysis['knn']['correct'] += 1
-			else:
-				analysis['knn']['incorrect'] += 1
+		print "svm ...",
+		t = time()
+		for i,a in enumerate(testinputs[subject]):
+			for trainedSubjects in svm:
+				if svm[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+					analysis[subject]['svm']['correct'] += 1
+				else:
+					analysis[subject]['svm']['incorrect'] += 1
+		t = time() - t
+		print "done in", t, "sec"
 
-		for key in analysis:
-			analysis[key]['accuracy'] = float(analysis[key]['correct']) / float(analysis[key]['correct'] + analysis[key]['incorrect']) * 100
+		print "gnb ...",
+		t = time()
+		for i,a in enumerate(testinputs[subject]):
+			for trainedSubjects in gnb:
+				if gnb[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+					analysis[subject]['gnb']['correct'] += 1
+				else:
+					analysis[subject]['gnb']['incorrect'] += 1
+		t = time() - t
+		print "done in", t, "sec"
 
-		return analysis
+		print "ann ...",
+		t = time()
+		for i,a in enumerate(testinputs[subject]):
+			for trainedSubjects in ann:
+				if ann[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+					analysis[subject]['ann']['correct'] += 1
+				else:
+					analysis[subject]['ann']['incorrect'] += 1
+		t = time() - t
+		print "done in", t, "sec"
 
+		print "knn ...",
+		t = time()
+		for i,a in enumerate(testinputs[subject]):
+			for trainedSubjects in knn:
+				if knn[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+					analysis[subject]['knn']['correct'] += 1
+				else:
+					analysis[subject]['knn']['incorrect'] += 1
+		t = time() - t
+		print "done in", t, "sec"
 
-print "ANALYSIS running ...",
-analysis = analyze(svm, gnb, ann, knn, testinputs, testoutputs)
-print "done"
-print
+		for cfier in analysis[subject]:
+			analysis[subject][cfier]['accuracy'] = float(analysis[subject][cfier]['correct']) / float(analysis[subject][cfier]['correct'] + analysis[subject][cfier]['incorrect']) * 100
 
-for key in analysis:
-	print key, ":"
-	for k2 in analysis[key]:
-		print k2, "=", analysis[key][k2]
+		T = time() - T
+		print "~ completed subject", subject, "in", T, "sec"
+
+	runningTime = time() - runningTime
+
 	print
+	print "done predicting classifiers in", runningTime
+	print
+	print "----------------------------------"
 
-'''
+	return analysis
+
+
+# PUBLISH RESULTS
+
+def publishResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn):
+	print
+	print "writing raw dictionary to analysis.dict"
+
+	t1 = time()
+	
+	with open('analysis.dict', 'w+') as f:
+		f.write(str(analysis))
+	
+	t2 = time()
+	print "done in", t2-t1, "sec"
+
+	print "writing results to analysis.txt"
+
+	t1 = time()
+	with open('analysis.txt', 'w+') as f:
+		for testSubject in analysis:
+
+			f.write("\n")
+			f.write("-----------------------------------------\n")
+			f.write("trainSubjects: " + str(trainSubjects) + "\n")
+			f.write("testSubjects: " + str(testSubjects) + "\n")
+			f.write("inputColumns: " + str(inputColumns) + "\n")
+			f.write("targetColumn: " + str(targetColumn) + "\n")
+
+			for cfier in analysis[testSubject]:
+				f.write(str(cfier) + " : " + str(analysis[testSubject][cfier]['accuracy']) + "\n")
+			f.write("-----------------------------------------\n")
+	t2 = time()
+	print "done in ", t2-t1, "sec"
+
+
+print "starting operations"
+startTime = time()
+
+(svm, gnb, ann, knn) = fitClassifiers(traininputs, trainoutputs)
+analysis = predictClassifiers(svm, gnb, ann, knn, testinputs, testoutputs)
+publishResults(analysis, config.trainSubjects, config.testSubjects, config.inputColumns, config.targetColumn)
+
+endTime = time()
+print
+print "done operations in", endTime - startTime
