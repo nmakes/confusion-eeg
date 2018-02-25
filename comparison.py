@@ -116,7 +116,7 @@ def splitSubjectDependentTrainTestIO(train, test, inputColumns, targetColumn):
 
 
 # TRAIN EACH CLASSIFIER
-def fitSubjectDependentClassifiers(traininputs, trainoutputs):
+def fitSubjectDependentClassifiers(traininputs, trainoutputs, classifiersToTrain=['svm','gnb','ann','knn'], parameters=config.defaultParams):
 	print
 	print "fitClassifiers starting ..."
 	print "number of train subjects =", len(traininputs.keys())
@@ -140,33 +140,37 @@ def fitSubjectDependentClassifiers(traininputs, trainoutputs):
 		l = len(y)
 		y = y.reshape(l,)
 
-		print "svm ...",
-		t = time()
-		svm[subject] = SVC()
-		svm[subject].fit(X,y)
-		t = time() - t
-		print "done in", t, "sec"
+		if 'svm' in classifiersToTrain:
+			print "svm ...",
+			t = time()
+			svm[subject] = SVC(**parameters['svm'])
+			svm[subject].fit(X,y)
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "gnb ...",
-		t = time()
-		gnb[subject] = GaussianNB()		
-		gnb[subject].fit(X,y)
-		t = time() - t
-		print "done in", t, "sec"
+		if 'gnb' in classifiersToTrain:
+			print "gnb ...",
+			t = time()
+			gnb[subject] = GaussianNB(**parameters['gnb'])
+			gnb[subject].fit(X,y)
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "ann ...",
-		t = time()
-		ann[subject] = MLPClassifier(learning_rate = 'adaptive')
-		ann[subject].fit(X,y)
-		t = time() - t
-		print "done in", t, "sec"
+		if 'ann' in classifiersToTrain:
+			print "ann ...",
+			t = time()
+			ann[subject] = MLPClassifier(**parameters['ann'])
+			ann[subject].fit(X,y)
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "knn ...",
-		t = time()
-		knn[subject] = KNeighborsClassifier()
-		knn[subject].fit(X,y)
-		t = time() - t
-		print "done", t, "sec"
+		if 'knn' in classifiersToTrain:
+			print "knn ...",
+			t = time()
+			knn[subject] = KNeighborsClassifier(**parameters['knn'])
+			knn[subject].fit(X,y)
+			t = time() - t
+			print "done", t, "sec"
 
 		T = time() - T
 		print "~ completed subject", subject, "in", T, "sec"
@@ -198,57 +202,66 @@ def predictSubjectDependentClassifiers(svm, gnb, ann, knn, testinputs, testoutpu
 
 		analysis[subject] = {}
 
-		analysis[subject]['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis[subject]['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis[subject]['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
-		analysis[subject]['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+		analysis[subject]['svm'] = {'correct':'Not Tested', 'incorrect':'Not Tested', 'accuracy':'Not Tested'}
+		analysis[subject]['gnb'] = {'correct':'Not Tested', 'incorrect':'Not Tested', 'accuracy':'Not Tested'}
+		analysis[subject]['ann'] = {'correct':'Not Tested', 'incorrect':'Not Tested', 'accuracy':'Not Tested'}
+		analysis[subject]['knn'] = {'correct':'Not Tested', 'incorrect':'Not Tested', 'accuracy':'Not Tested'}
 
-		print "svm ...",
-		t = time()
-		for i,a in enumerate(testinputs[subject]):
-			for trainedSubjects in svm:
-				if svm[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
-					analysis[subject]['svm']['correct'] += 1
-				else:
-					analysis[subject]['svm']['incorrect'] += 1
-		t = time() - t
-		print "done in", t, "sec"
+		if svm!={}:
+			print "svm ...",
+			analysis[subject]['svm'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+			t = time()
+			for i,a in enumerate(testinputs[subject]):
+				for trainedSubjects in svm:
+					if svm[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+						analysis[subject]['svm']['correct'] += 1
+					else:
+						analysis[subject]['svm']['incorrect'] += 1
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "gnb ...",
-		t = time()
-		for i,a in enumerate(testinputs[subject]):
-			for trainedSubjects in gnb:
-				if gnb[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
-					analysis[subject]['gnb']['correct'] += 1
-				else:
-					analysis[subject]['gnb']['incorrect'] += 1
-		t = time() - t
-		print "done in", t, "sec"
+		if gnb!={}:
+			print "gnb ...",
+			analysis[subject]['gnb'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+			t = time()
+			for i,a in enumerate(testinputs[subject]):
+				for trainedSubjects in gnb:
+					if gnb[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+						analysis[subject]['gnb']['correct'] += 1
+					else:
+						analysis[subject]['gnb']['incorrect'] += 1
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "ann ...",
-		t = time()
-		for i,a in enumerate(testinputs[subject]):
-			for trainedSubjects in ann:
-				if ann[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
-					analysis[subject]['ann']['correct'] += 1
-				else:
-					analysis[subject]['ann']['incorrect'] += 1
-		t = time() - t
-		print "done in", t, "sec"
+		if ann!={}:
+			print "ann ...",
+			analysis[subject]['ann'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+			t = time()
+			for i,a in enumerate(testinputs[subject]):
+				for trainedSubjects in ann:
+					if ann[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+						analysis[subject]['ann']['correct'] += 1
+					else:
+						analysis[subject]['ann']['incorrect'] += 1
+			t = time() - t
+			print "done in", t, "sec"
 
-		print "knn ...",
-		t = time()
-		for i,a in enumerate(testinputs[subject]):
-			for trainedSubjects in knn:
-				if knn[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
-					analysis[subject]['knn']['correct'] += 1
-				else:
-					analysis[subject]['knn']['incorrect'] += 1
-		t = time() - t
-		print "done in", t, "sec"
+		if knn!={}:
+			print "knn ...",
+			analysis[subject]['knn'] = {'correct':0, 'incorrect':0, 'accuracy':0}
+			t = time()
+			for i,a in enumerate(testinputs[subject]):
+				for trainedSubjects in knn:
+					if knn[trainedSubjects].predict([a])[0] == testoutputs[subject][i]:
+						analysis[subject]['knn']['correct'] += 1
+					else:
+						analysis[subject]['knn']['incorrect'] += 1
+			t = time() - t
+			print "done in", t, "sec"
 
 		for cfier in analysis[subject]:
-			analysis[subject][cfier]['accuracy'] = float(analysis[subject][cfier]['correct']) / float(analysis[subject][cfier]['correct'] + analysis[subject][cfier]['incorrect']) * 100
+			if analysis[subject][cfier]['accuracy']!='Not Tested':
+				analysis[subject][cfier]['accuracy'] = float(analysis[subject][cfier]['correct']) / float(analysis[subject][cfier]['correct'] + analysis[subject][cfier]['incorrect']) * 100
 
 		T = time() - T
 		print "~ completed subject", subject, "in", T, "sec"
@@ -264,14 +277,24 @@ def predictSubjectDependentClassifiers(svm, gnb, ann, knn, testinputs, testoutpu
 
 
 # PUBLISH RESULTS
-def publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn):
+def publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn, analysisFileExtension=config.analysisFileExtension):
 	
+	analysisDictFile = 'unnamed_analysisDictFile'
+	analysisRawFile = 'unnamed_analysisRawFile'
+
+	if analysisFileExtension is not None:
+		analysisDictFile = config.analysisDictFile + '_' + analysisFileExtension
+		analysisRawFile = config.analysisRawFile + '_' + analysisFileExtension
+	else:
+		analysisDictFile = config.analysisDictFile
+		analysisRawFile = config.analysisRawFile
+
 	print
-	print "writing raw dictionary to analysis.dict"
+	print "writing raw dictionary to", analysisDictFile
 
 	t1 = time()
 	
-	with open(config.analysisDictFile, 'a') as f:
+	with open(analysisDictFile, 'a') as f:
 		f.write("\n")
 		f.write(str(analysis))
 	
@@ -281,7 +304,7 @@ def publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputC
 	print "writing results to analysis.txt"
 
 	t1 = time()
-	with open(config.analysisRawFile, 'a') as f:
+	with open(analysisRawFile, 'a') as f:
 		for testSubject in analysis:
 
 			f.write("\n")
@@ -303,18 +326,26 @@ def publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputC
 def getSubjectDependentCumulativeScores(scores, analysis):
 
 	for subject in analysis:
-		scores['svm'] += analysis[subject]['svm']['accuracy']
-		scores['gnb'] += analysis[subject]['gnb']['accuracy']
-		scores['ann'] += analysis[subject]['ann']['accuracy']
-		scores['knn'] += analysis[subject]['knn']['accuracy']
+		for cfier in scores:
+			if analysis[subject][cfier]['accuracy']!='Not Tested':
+				if scores[cfier]=='Not Tested':
+					scores[cfier]=0
+				scores[cfier] += analysis[subject][cfier]['accuracy']
 
 	return scores
 
 
 # PUBLISH CUMULATIVE RESULTS
-def publishSubjectDependentCumulativeResults(scores):
+def publishSubjectDependentCumulativeResults(scores, analysisFileExtension=config.analysisFileExtension):
 
-	print "writing results to cumulative_analysis.txt"
+	analysisCumulativeFile = 'unnamed_analysis_file'
+
+	if analysisFileExtension is not None:
+		analysisCumulativeFile = config.analysisCumulativeFile + '_' + analysisFileExtension
+	else:
+		analysisCumulativeFile = config.analysisCumulativeFile
+
+	print "writing results to", analysisCumulativeFile
 
 	t1 = time()
 	with open(config.analysisCumulativeFile, 'a') as f:
@@ -332,13 +363,13 @@ def publishSubjectDependentCumulativeResults(scores):
 
 
 # RUN SUBJECT DEPENDENT OPERATIONS
-def runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn):
+def runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn, classifiersToTrain=['svm','gnb','ann','knn'], parameters=config.defaultParams):
 	print "starting subject dependent operations"
 	startTime = time()
 
 	(train, test) = getSubjectDependentRawTrainTest(config.datasetFile, trainSubjects, testSubjects)
 	(traininputs, trainoutputs, testinputs, testoutputs) = splitSubjectDependentTrainTestIO(train, test, inputColumns, targetColumn)
-	(svm, gnb, ann, knn) = fitSubjectDependentClassifiers(traininputs, trainoutputs)
+	(svm, gnb, ann, knn) = fitSubjectDependentClassifiers(traininputs, trainoutputs, classifiersToTrain, parameters)
 	analysis = predictSubjectDependentClassifiers(svm, gnb, ann, knn, testinputs, testoutputs)
 	publishSubjectDependentResults(analysis, trainSubjects, testSubjects, inputColumns, targetColumn)
 
@@ -348,15 +379,19 @@ def runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, tar
 	return analysis
 
 
+def exploreKNN():
+
+	pass
+
 # EXECUTION
 
 if __name__ == '__main__':
 
 	scores = {}
-	scores['svm'] = 0
-	scores['gnb'] = 0
-	scores['ann'] = 0
-	scores['knn'] = 0
+	scores['svm'] = 'Not Tested'
+	scores['gnb'] = 'Not Tested'
+	scores['ann'] = 'Not Tested'
+	scores['knn'] = 'Not Tested'
 
 	for i in config.subjects:
 		testSubjects = [i]
@@ -366,13 +401,18 @@ if __name__ == '__main__':
 		inputColumns = config.inputColumns
 		targetColumn = config.targetColumn
 
-		analysis = runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn)
+		analysis = runSubjectDependentOperations(trainSubjects, testSubjects, inputColumns, targetColumn, config.classifiersToTrain, config.parameters)
+		print
+		print "GOT ANALYSIS AS", analysis
+		print 
 		scores = getSubjectDependentCumulativeScores(scores, analysis)
 	
-	scores['svm'] /= 9
-	scores['gnb'] /= 9
-	scores['ann'] /= 9
-	scores['knn'] /= 9
+	for cfier in scores:
+		if scores[cfier]!='Not Tested':
+			scores['svm'] /= 9
+			scores['gnb'] /= 9
+			scores['ann'] /= 9
+			scores['knn'] /= 9
 	publishSubjectDependentCumulativeResults(scores)
 
 

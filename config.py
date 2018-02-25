@@ -26,9 +26,9 @@ Column 15: user-defined label (whether the subject is actually confused) - confu
 '''
 
 datasetFile = './dataset/EEG data.csv'
-analysisDictFile = './analysis/analysis.dict'
-analysisRawFile = './analysis/analysis.txt'
-analysisCumulativeFile = './analysis/cumulative_analysis.txt'
+analysisDictFile = './analysis/analysis'
+analysisRawFile = './analysis/analysis'
+analysisCumulativeFile = './analysis/cumulative_analysis'
 
 subjects = [1,2,3,4,5,6,7,8,9]
 
@@ -37,3 +37,10 @@ testSubjects = [9]
 
 inputColumns = [3,4,5,6,7,8,9,10,11,12,13,14]
 targetColumn = [15]
+
+defaultParams = {'svm':{}, 'gnb':{}, 'ann':{}, 'knn':{}}
+
+# classifiersToTrain = ['svm','gnb','ann','knn']
+classifiersToTrain = ['knn']
+parameters = {'svm':{}, 'gnb':{}, 'ann':{}, 'knn':{'n_neighbors':10}}
+analysisFileExtension='knn10'
